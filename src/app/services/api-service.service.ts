@@ -11,8 +11,22 @@ export class ApiService {
     private httpClient: HttpClient
   ) { }
 
-  getPatients() {
-    return this.httpClient.get(environment.queryURI + '/Patient',
+  getPatients(query=undefined) {
+    if(query){
+      let queryString = "?"
+      for (const [key,value] of Object.entries(query)){
+        queryString += `${key}=${value},`
+      }
+      return this.httpClient.get(environment.queryURI + '/Patient' + queryString,
+      { headers: this.getHeaders() });
+    }
+    else{
+      return this.httpClient.get(environment.queryURI + '/Patient',
+      { headers: this.getHeaders() });
+    }
+  }
+  getPatientsModified() {
+      return this.httpClient.get(environment.queryURI + '/Patient?birthdate=ge1960-01-01&birthdate=le1965-12-31',
       { headers: this.getHeaders() });
   }
 
