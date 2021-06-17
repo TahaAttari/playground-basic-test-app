@@ -15,8 +15,9 @@ export class ApiService {
     if(query){
       let queryString = "?"
       for (const [key,value] of Object.entries(query)){
-        queryString += `${key}=${value},`
+        queryString += `${key}=${value}&`
       }
+      console.log(queryString)
       return this.httpClient.get(environment.queryURI + '/Patient' + queryString,
       { headers: this.getHeaders() });
     }

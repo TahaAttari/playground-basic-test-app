@@ -6,7 +6,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL',
+    dateInput: 'YYYY-MM-DD',
   },
   display: {
     dateInput: 'YYYY-MM-DD',
@@ -57,13 +57,13 @@ export class AppComponent implements OnInit {
         this.request_time = finish - start
       }
     )
-    this.apiService.getPatientsModified().subscribe(
-      data => {
-        console.log(data)
-        // this.Patients = this.flattenPatientObj(data)
-      },
-      error => console.warn(error),
-    )
+    // this.apiService.getPatientsModified().subscribe(
+    //   data => {
+    //     console.log(data)
+    //     // this.Patients = this.flattenPatientObj(data)
+    //   },
+    //   error => console.warn(error),
+    // )
   }
 
   flattenPatientObj = (response) => {
@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
             query = {...query,name:this.name.value}
         }
         if(this.birthdate.value){
-            query = {...query,birthdate:(new Date(this.birthdate.value)).toISOString()}
+            query = {...query,birthdate:(new Date(this.birthdate.value)).toISOString().split('T')[0]}
         }
         this.apiService.getPatients(query).subscribe(
           data => {
