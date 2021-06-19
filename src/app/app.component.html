@@ -26,9 +26,9 @@
             <input [matDatepicker]="myDatepicker" [formControl]='birthdate' >
             <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #myDatepicker></mat-datepicker>
-            <div *ngIf="birthdate.errors?.pattern">
+            <!-- <div *ngIf="birthdate.errors?.pattern">
                 YYYY-MM-DD format please
-              </div>
+              </div> -->
         </th>
       </tr>
       <tr>
@@ -47,6 +47,7 @@
         </tr>
     </tbody>
   </table>
+  <app-dynamic-form [questions]="questions$ | async"></app-dynamic-form>
   <footer>
       {{request_time | millisecondFormat}}
   </footer>

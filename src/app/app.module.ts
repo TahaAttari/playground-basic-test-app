@@ -8,6 +8,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, NativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { MillisecondFormatPipe } from './millisecond-format.pipe';
+import { DynamicFormComponent } from './questionnaire.component';
+import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 
 import { AppComponent } from './app.component';
 import { ApiService } from './services/api-service.service';
@@ -15,6 +17,8 @@ import { ApiService } from './services/api-service.service';
 @NgModule({
   declarations: [
     AppComponent,
+    DynamicFormComponent,
+    DynamicFormQuestionComponent,
     MillisecondFormatPipe
   ],
   imports: [

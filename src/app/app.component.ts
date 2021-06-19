@@ -3,6 +3,10 @@ import { ApiService } from '../app/services/api-service.service';
 import { FormControl, Validators } from '@angular/forms';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { QuestionService } from './services/question.service';
+
+import { QuestionBase } from './question-base';
+import { Observable } from 'rxjs';
 
 export const MY_FORMATS = {
   parse: {
@@ -27,6 +31,7 @@ export const MY_FORMATS = {
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
 
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    QuestionService
   ],
 })
 
@@ -37,10 +42,15 @@ export class AppComponent implements OnInit {
   birthdate = new FormControl('')
   request_time = undefined
   refresh_disabled = true
+  questions$: Observable<QuestionBase<any>[]>;
 
   constructor(
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService,
+    service:QuestionService
+  ) { 
+    this.questions$ = service.getQuestions()
+  }
+  
 
   ngOnInit() {
     let start = Date.now()
