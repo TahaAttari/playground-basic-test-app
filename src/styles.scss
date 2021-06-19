@@ -2,6 +2,69 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+footer{text-align: center; margin:25px auto}
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: table-cell;
+    vertical-align: middle;
+    /* text-align: center; */
+    width:100vw;
+    height:100vh;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  main{
+    position:relative;
+    max-width:600px;
+    min-width: 400px;
+    max-height:calc(var(--image-height) * 1px);
+    width:80vmin;
+    height:80vmin;
+    margin: 0 auto;
+  }
+  
+  .submit{
+    background-color: darkblue;
+    width: 200px;
+    margin: 0 auto;
+    font-weight: bold;
+    color: white;
+    border-radius: 30px;
+    padding: 15px 0;
+    margin: 0 auto;
+  
+  }
+  .submit:hover, .submit:active{
+    background-color: black;
+  }
+  .delete{
+    background-color: red;
+    width: 200px;
+    margin: 0 auto;
+    font-weight: bold;
+    color: white;
+    border-radius: 30px;
+    padding: 15px 0;
+  }
+  .delete:hover, button.delete:active{
+    background-color: darkred;
+  }
+  .delete:active,.submit:active{
+    color: #777;
+  }
+  .submit:disabled, .delete:disabled{
+    opacity: 0.5;
+  }
+  code{
+    text-align: center;
+    color: #444;
+  }
+.ng-invalid{border-color: red;}

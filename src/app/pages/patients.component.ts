@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../app/services/api-service.service';
-import { FormControl, Validators } from '@angular/forms';
+import { ApiService } from '../../app/services/api-service.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { QuestionService } from './services/question.service';
+import { QuestionService } from '../services/question.service';
 
-import { QuestionBase } from './question-base';
+import { QuestionBase } from '../dynamic-form/question-base';
 import { Observable } from 'rxjs';
 
 export const MY_FORMATS = {
@@ -23,7 +23,7 @@ export const MY_FORMATS = {
 @Component({
   selector: 'patients',
   templateUrl: './patients.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./patients.component.scss'],
   providers: [
     // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
     // application's root module. We provide it at the component level here, due to limitations of
@@ -38,8 +38,11 @@ export const MY_FORMATS = {
 export class PatientsComponent implements OnInit {
   title = 'fhir-app-test';
   Patients = []
-  name = new FormControl('', Validators.pattern('[a-zA-Z ]*'))
-  birthdate = new FormControl('')
+  controls = {
+    name:new FormControl('', Validators.pattern('[a-zA-Z ]*')),
+    birthdate: new FormControl('')
+  }
+  form = new FormGroup(this.controls)
   request_time = undefined
   refresh_disabled = true
   questions$: Observable<QuestionBase<any>[]>;
@@ -79,9 +82,9 @@ export class PatientsComponent implements OnInit {
       const name = item.resource.name || [];
       return {
         id: item.resource.id,
-        name: (name.length>0)?`${((name[0] || {}).given || []).join(" ")} ${(name[0] || {}).family}`:"",
-        gender: item.resource.gender,
-        dob: item.resource.birthDate,
+        name: (name.length>0)?`${((name[0] || {}).given || []).join(" ")} ${(name[0] || {}).family}`:'N/A',
+        gender: item.resource.gender?item.resource.gender:'unnknown',
+        dob: item.resource.birthDate?item.resource.birthDate:'N/A',
       };
     });
     output.sort((a,b)=>{
@@ -94,13 +97,13 @@ export class PatientsComponent implements OnInit {
   queryPatients = () => {
     let start = Date.now()
     this.refresh_disabled=true
-    if(this.name.value||this.birthdate.value){
+    if(this.controls.name.value||this.controls.birthdate.value){
         let query = {}
-        if(this.name.value){
-            query = {...query,name:this.name.value}
+        if(this.controls.name.value){
+            query = {...query,name:this.controls.name.value}
         }
-        if(this.birthdate.value){
-            query = {...query,birthdate:(new Date(this.birthdate.value)).toISOString().split('T')[0]}
+        if(this.controls.birthdate.value){
+            query = {...query,birthdate:(new Date(this.controls.birthdate.value)).toISOString().split('T')[0]}
         }
         this.apiService.getPatients(query).subscribe(
           data => {

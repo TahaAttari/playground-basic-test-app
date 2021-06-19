@@ -1,0 +1,41 @@
+td {
+    text-align: center;
+    padding: 25px 10px;
+    margin:50px
+}
+/* input {display: block;} */
+table, td {
+    border-bottom: 1px solid lightblue;
+    border-collapse: collapse;
+}
+th{
+    border-bottom: 1px solid darkblue;
+    background-color: darkblue;
+    padding: 25px 20px;
+    color: #fff;
+}
+table{
+    margin: 0 auto;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    overflow:hidden;
+}
+main > div {
+    overflow-x: scroll;
+}
+p{
+    text-align: center;
+}
+.filter{
+    display: grid;
+    width: 80%;
+    margin: 0 auto;
+    z-index: 999;
+    overflow: visible;
+}
+.filter > *{
+    margin: 7px auto;
+}
+.filter label{
+    font-weight: bold;
+}

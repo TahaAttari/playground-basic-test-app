@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { DateQuestion } from '../question-date';
-import { BooleanQuestion } from '../question-boolean';
-import { QuestionBase } from '../question-base';
-import { TextboxQuestion } from '../question-textbox';
-import { GroupQuestion } from '../question-group';
+import { DateQuestion } from '../dynamic-form/question-date';
+import { BooleanQuestion } from '../dynamic-form/question-boolean';
+import { QuestionBase } from '../dynamic-form/question-base';
+import { TextboxQuestion } from '../dynamic-form/question-textbox';
+import { GroupQuestion } from '../dynamic-form/question-group';
 import * as questionnaire from '../../assets/questionnaire.json'
 import { of } from 'rxjs';
 
@@ -14,30 +14,50 @@ export class QuestionService {
   // TODO: get from a remote source of question metadata
   getQuestions() {
 
-    const questions: QuestionBase<string>[] = questionnaire.item.map((item)=>{
+    const questions: QuestionBase<string>[] =[]
+    questionnaire.item.forEach((item)=>{
         if(item.type=='boolean'){
-            return new BooleanQuestion({
+            questions.push( new BooleanQuestion({
                 key:item.linkId,
                 label:item.text
-            })
+            }))
         }
         else if(item.type=='date'){
-            return new DateQuestion({
+            questions.push( new DateQuestion({
                 key:item.linkId,
                 label:item.text
-            })
+            }))
         }
         else if(item.type=='string'){
-            return new TextboxQuestion({
+            questions.push( new TextboxQuestion({
                 key:item.linkId,
                 label:item.text
-            })
+            }))
         }
         else if(item.type=="group"){
-            return new GroupQuestion({
+            questions.push(new GroupQuestion({
                 key:item.linkId,
                 label:item.text,
-                item:item.item
+            }))
+            item.item.forEach((subitem)=>{
+                if(subitem.type=='boolean'){
+                    questions.push( new BooleanQuestion({
+                        key:subitem.linkId,
+                        label:subitem.text
+                    }))
+                }
+                else if(subitem.type=='date'){
+                    questions.push( new DateQuestion({
+                        key:subitem.linkId,
+                        label:subitem.text
+                    }))
+                }
+                else if(subitem.type=='string'){
+                    questions.push( new TextboxQuestion({
+                        key:subitem.linkId,
+                        label:subitem.text
+                    }))
+                }
             })
         }
     })

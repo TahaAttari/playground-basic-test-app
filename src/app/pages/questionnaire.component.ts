@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { QuestionBase } from './question-base';
-import { QuestionControlService } from './services/question-control.service';
+import { QuestionBase } from '../dynamic-form/question-base';
+import { QuestionControlService } from '../services/question-control.service';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import * as questionnaire from '../assets/questionnaire.json'
-import { QuestionService } from './services/question.service';
-import { Observable } from 'rxjs';
-
+import * as questionnaire from '../../assets/questionnaire.json'
+import { QuestionService } from '../services/question.service';
 
 export const MY_FORMATS = {
     parse: {
@@ -25,12 +23,12 @@ export const MY_FORMATS = {
 @Component({
   selector: 'questionnaire',
   templateUrl: './questionnaire.component.html',
+  styleUrls: ['./questionnaire.component.scss'],
   providers: [ QuestionControlService,
     // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
     // application's root module. We provide it at the component level here, due to limitations of
     // our example generation script.
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
 
 ]
@@ -96,6 +94,6 @@ export class QuestionnaireComponent implements OnInit {
             })
         }
     }
-    this.payLoad = JSON.stringify(response, null, 2)
+    this.payLoad = JSON.stringify(response, null, 2 )
   }
 }

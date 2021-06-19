@@ -1,0 +1,43 @@
+<div [formGroup]="form" class="filter">
+  <label for='name' >Name filter</label>
+  <input
+  id='name'
+  type="text"
+  [formControlName]='"name"'
+  pattern='[a-zA-Z ]*'
+  >
+  <label>Date filter</label>
+  <div>
+  <input [matDatepicker]="myDatepicker" [formControlName]='"birthdate"' >
+  <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+  <mat-datepicker #myDatepicker></mat-datepicker></div>
+  <button
+  (click)="queryPatients()"
+  [disabled]="(!form.valid||refresh_disabled)"
+  autocomplete="off"
+  class="submit"
+  >
+      Apply Filters
+  </button>
+</div>
+<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Gender</th>
+        <th>Date of Birth</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let patient of Patients">
+          <td>{{patient.id}}</td>
+          <td>{{patient.name?patient.name:""}}</td>
+          <td>{{patient.gender}}</td>
+          <td>{{patient.dob}}</td>
+        </tr>
+    </tbody>
+  </table>
+  <footer>
+    {{request_time | millisecondFormat}}
+</footer>
