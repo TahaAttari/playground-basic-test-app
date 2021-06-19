@@ -42,6 +42,6 @@ export class QuestionService {
         }
     })
 
-    return of(questions.sort((a, b) => a.order - b.order));
+    return questions;
   }
 }
