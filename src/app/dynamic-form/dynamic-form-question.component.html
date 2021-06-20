@@ -1,23 +1,50 @@
 <div [class]="question.controlType+'-wrapper'" [formGroup]="form">
   <label [attr.for]="question.key" [class]="question.controlType+'-label'">{{question.label}}</label>
-
   <div [ngSwitch]="question.controlType">
 
-    <input *ngSwitchCase="'string'" [formControlName]="question.key"
-            [id]="question.key" [type]="question.controlType" class="string-input" pattern="[a-zA-Z ]*">
+    <input 
+      *ngSwitchCase="'string'" 
+      [formControlName]="question.key"
+      [id]="question.key" 
+      [type]="question.controlType" 
+      class="string-input" 
+      pattern="[a-zA-Z ]*">
 
-    <div [id]="question.key" *ngSwitchCase="'boolean'" class="radio-input-wrapper">
-      <input type="radio" value="true" [name]="question.key" [formControlName]="question.key" class="radio-input"/>
-      <label class='radio-label'> Yes</label>
-      <input type="radio" value="false" [name]="question.key" [formControlName]="question.key" class="radio-input"/>
-      <label class='radio-label'> No</label>
+    <div 
+      [id]="question.key" 
+      *ngSwitchCase="'boolean'" 
+      class="radio-input-wrapper">
+      <input 
+        type="radio" 
+        value="true" 
+        [name]="question.key" 
+        [formControlName]="question.key" 
+        class="radio-input"/>
+      <label 
+        class="radio-label"> 
+        Yes
+      </label>
+      <input 
+        type="radio" 
+        value="false" 
+        [name]="question.key" 
+        [formControlName]="question.key" 
+        class="radio-input"/>
+      <label 
+        class="radio-label">
+        No
+      </label>
     </div>
-    <div [id]="question.key" *ngSwitchCase="'date'">
-      <input [matDatepicker]="myDatepicker" [formControlName]='question.key' >
-            <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
+    
+    <div 
+      [id]="question.key" 
+      *ngSwitchCase="'date'">
+      <input 
+        [matDatepicker]="myDatepicker" 
+        [formControlName]="question.key" >
+          <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
     </div>
+
   </div>
-
-  <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div> -->
 </div>

@@ -11,57 +11,48 @@ import { of } from 'rxjs';
 @Injectable()
 export class QuestionService {
 
-  // TODO: get from a remote source of question metadata
   getQuestions() {
-
+    //to fully follow the Questionnaire spec
+    //a recursive function would be best to
+    //properly deal with nested Groups.
+    //
+    //Avoided writing one here to keep the
+    //code as simple as possible since this 
+    //is sufficient for the test data.
     const questions: QuestionBase<string>[] =[]
     questionnaire.item.forEach((item)=>{
+        let data = {
+            key:item.linkId,
+            label:item.text
+        }
         if(item.type=='boolean'){
-            questions.push( new BooleanQuestion({
-                key:item.linkId,
-                label:item.text
-            }))
+            questions.push( new BooleanQuestion(data))
         }
         else if(item.type=='date'){
-            questions.push( new DateQuestion({
-                key:item.linkId,
-                label:item.text
-            }))
+            questions.push( new DateQuestion(data))
         }
         else if(item.type=='string'){
-            questions.push( new TextboxQuestion({
-                key:item.linkId,
-                label:item.text
-            }))
+            questions.push( new TextboxQuestion(data))
         }
         else if(item.type=="group"){
-            questions.push(new GroupQuestion({
-                key:item.linkId,
-                label:item.text,
-            }))
+            questions.push(new GroupQuestion(data))
             item.item.forEach((subitem)=>{
+                data = {
+                    key:subitem.linkId,
+                    label:subitem.text
+                }
                 if(subitem.type=='boolean'){
-                    questions.push( new BooleanQuestion({
-                        key:subitem.linkId,
-                        label:subitem.text
-                    }))
+                    questions.push( new BooleanQuestion(data))
                 }
                 else if(subitem.type=='date'){
-                    questions.push( new DateQuestion({
-                        key:subitem.linkId,
-                        label:subitem.text
-                    }))
+                    questions.push( new DateQuestion(data))
                 }
                 else if(subitem.type=='string'){
-                    questions.push( new TextboxQuestion({
-                        key:subitem.linkId,
-                        label:subitem.text
-                    }))
+                    questions.push( new TextboxQuestion(data))
                 }
             })
         }
     })
-
     return questions;
   }
 }

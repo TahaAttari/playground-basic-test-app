@@ -7,7 +7,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as questionnaire from '../../assets/questionnaire.json'
 import { QuestionService } from '../services/question.service';
-
+//custom datepicker format
 export const MY_FORMATS = {
     parse: {
       dateInput: 'YYYY-MM-DD',
@@ -25,9 +25,7 @@ export const MY_FORMATS = {
   templateUrl: './questionnaire.component.html',
   styleUrls: ['./questionnaire.component.scss'],
   providers: [ QuestionControlService,
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
+    // TODO : move providers to app.module wherever possible
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
 
@@ -35,21 +33,24 @@ export const MY_FORMATS = {
 })
 export class QuestionnaireComponent implements OnInit {
 
-//   @Input() questions: QuestionBase<string>[] | null = [];
   questions:QuestionBase<any>[];
   form!: FormGroup;
   payLoad = '';
 
   constructor(private qcs: QuestionControlService,
+    //Generate questions from json
     service:QuestionService) {
         this.questions = service.getQuestions()
     }
 
   ngOnInit() {
+    //Use QuestionControlService to apply Form Controls and Validation
     this.form = this.qcs.toFormGroup(this.questions as QuestionBase<string>[]);
   }
-
+  //reshape the form response into the expected
+  //QuestionnaireResponse
   onSubmit() {
+    //TODO: add the rest of the possible value formats
     const ValueDict = {
         boolean:'valueBoolean',
         date:'valueDate',
@@ -64,28 +65,52 @@ export class QuestionnaireComponent implements OnInit {
     let formData = this.form.getRawValue()
     for(const item of questionnaire.item){
         if(item.type!=='group'){
-            response.item.push(
+            if(formData[item.linkId]){
+              //if there's no response, omit the 
+              //answer key entirely to make it unambiguous
+              response.item.push(
                 {
-                    linkId:item.linkId,
-                    text:item.text,
-                    answer:{
-                        [ValueDict[item.type]]:formData[item.linkId]
-                    }
+                  linkId:item.linkId,
+                  text:item.text,
+                  answer:{
+                  [ValueDict[item.type]]:formData[item.linkId]
+                 }
                 }
-            )
-        }
+              )
+            }
+            else{
+              response.item.push(
+                {
+                  linkId:item.linkId,
+                  text:item.text,
+                }
+              )
+            }
+          }
         else{
             let groupItem = []
             for(const subItem of item.item){
+              //if there's no response, omit the 
+              //answer key entirely to make it unambiguous
+              if(formData[subItem.linkId]){
                 groupItem.push(
-                    {
-                        linkId:subItem.linkId,
-                        text:subItem.text,
-                        answer:{
-                            [ValueDict[subItem.type]]:formData[subItem.linkId]
-                        }
+                  {
+                    linkId:subItem.linkId,
+                    text:subItem.text,
+                    answer:{
+                        [ValueDict[subItem.type]]:formData[subItem.linkId]
                     }
+                  }
                 )
+              }
+              else{
+                groupItem.push(
+                  {
+                    linkId:subItem.linkId,
+                    text:subItem.text,
+                  }
+                )
+              }
             }
             response.item.push({
                 linkId:item.linkId,
